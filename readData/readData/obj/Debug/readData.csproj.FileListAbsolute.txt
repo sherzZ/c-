@@ -1,6 +1,0 @@
-E:\visualStudio2013\Projects\readData\readData\bin\Debug\readData.exe.config
-E:\visualStudio2013\Projects\readData\readData\obj\Debug\readData.csprojResolveAssemblyReference.cache
-E:\visualStudio2013\Projects\readData\readData\bin\Debug\readData.exe
-E:\visualStudio2013\Projects\readData\readData\bin\Debug\readData.pdb
-E:\visualStudio2013\Projects\readData\readData\obj\Debug\readData.exe
-E:\visualStudio2013\Projects\readData\readData\obj\Debug\readData.pdb
