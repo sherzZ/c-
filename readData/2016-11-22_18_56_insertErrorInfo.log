@@ -1,0 +1,36 @@
+当前时间：2016/11/22 18:56:04
+错误信息MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's');insert into img_and_key_relation(keyword_id,image_id) values('10452','11071'' at line 1
+   在 MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   在 MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   在 MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   在 readData.DataBase.ExecuteSqlTran(String insertErrorCommondLogPath, List`1 SQLStringList) 位置 e:\visualStudio2013\Projects\readData\readData\DataBase.cs:行号 43：
+插入数据信息：执行到第11070条记录失败
+：
+当前时间：2016/11/22 18:56:11
+错误信息MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 't');insert into img_and_key_relation(keyword_id,image_id) values('15119','21571'' at line 1
+   在 MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   在 MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   在 MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   在 readData.DataBase.ExecuteSqlTran(String insertErrorCommondLogPath, List`1 SQLStringList) 位置 e:\visualStudio2013\Projects\readData\readData\DataBase.cs:行号 43：
+插入数据信息：执行到第21570条记录失败
+
+当前时间：2016/11/22 18:56:47
+错误信息MySql.Data.MySqlClient.MySqlException (0x80004005): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's');insert into img_and_key_relation(keyword_id,image_id) values('30789','84509'' at line 1
+   在 MySql.Data.MySqlClient.MySqlStream.ReadPacket()
+   在 MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.GetResult(Int32 statementId, Int32& affectedRows, Int64& insertedId)
+   在 MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)
+   在 MySql.Data.MySqlClient.MySqlDataReader.NextResult()
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)
+   在 MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   在 readData.DataBase.ExecuteSqlTran(String insertErrorCommondLogPath, List`1 SQLStringList) 位置 e:\visualStudio2013\Projects\readData\readData\DataBase.cs:行号 43：
+插入数据信息：执行到第84508条记录失败
+
