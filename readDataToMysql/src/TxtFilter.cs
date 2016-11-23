@@ -32,11 +32,13 @@ namespace readData
                 int keyword_Length = keyword.Length;
                 for (int i = 0; i < keyword_Length; i++)
                 {
-                    //if (keywordSet.Count != 0) {
-                    if (!keywordDic.Keys.Contains(keyword[i]))
+                    if (!string.IsNullOrEmpty(keyword[i]))
                     {
-                        keywordListLength += 1;
-                        keywordDic.Add(keyword[i], keywordListLength);
+                        if (!keywordDic.Keys.Contains(keyword[i]))
+                        {
+                            keywordListLength += 1;
+                            keywordDic.Add(keyword[i], keywordListLength);
+                        }
                     }
                 }
             }
@@ -62,7 +64,7 @@ namespace readData
             while ((strContent = sr.ReadLine()) != null)
             {
                 string[] strArr = strContent.Split(',');
-                string sqlCommond = string.Format(@"insert into imagekeyword(keyword) value('{0}','{1}') ", strArr[0],strArr[1]);
+                string sqlCommond = string.Format(@"insert into imagekeyword(keyword_id,keyword) value('{0}','{1}'); ", strArr[1],strArr[0]);
                 SQLStringList.Add(sqlCommond);             
             }
             return SQLStringList;
@@ -144,13 +146,87 @@ namespace readData
             string strContent;
             while ((strContent = sr.ReadLine()) != null)
             {
+                string[] strArr = strContent.Split(',');
+                fileData.id_other = strArr[0];
+                fileData.id_self = strArr[1];
+                fileData.image_url = strArr[3];
+                // imageDic.Add(fileData.id_other, numOfImage);
+                string insertImageCommond = "";
+                string insertKeyAndR = "";
+                string[] keyword = strArr[4].Split(' ');
+                //numKeyword表示读取每一行获得的关键字个数
+                int numKeyword = keyword.Length;
+                switch(numKeyword){
+                    case 1:
+                        if (!string.IsNullOrEmpty(keyword[0]))
+                        {
+                            numOfImage += 1;
+                            insertImageCommond = string.Format(@"insert into image(image_id,id_other,id_self,image_url) values('{0}','{1}','{2}','{3}');", numOfImage, fileData.id_other, fileData.id_self, fileData.image_url);
+                            if (!keywordDic.Keys.Contains(keyword[0]))
+                            {
+                                numOfKeyword += 1;
+                                keywordDic.Add(keyword[0], numOfKeyword);
+                                string.Format(@" insert into imagekeyword(keyword_id,keyword) value('{0}','{1}');insert into img_and_key_relation(keyword_id,image_id) values('{2}','{3}');", keywordDic[keyword[0]], keyword[0], keywordDic[keyword[0]], numOfImage);
+                            }
+                            else
+                            {
+                                int keyword_id = keywordDic[keyword[0]];
+                                insertKeyAndR = insertKeyAndR + string.Format(@"insert into img_and_key_relation(keyword_id,image_id) values('{0}','{1}');", keyword_id, numOfImage);
+                            }                           
+                        }
+                         sqlCommond = insertImageCommond + insertKeyAndR;
+                         SQLStringList.Add(sqlCommond);
+                        break;
+                    default:
+                        numOfImage += 1;
+                        insertImageCommond = string.Format(@"insert into image(image_id,id_other,id_self,image_url) values('{0}','{1}','{2}','{3}');", numOfImage, fileData.id_other, fileData.id_self, fileData.image_url);
+                        for (int i = 0; i < numKeyword; i++)
+                        {
+                            if (!string.IsNullOrEmpty(keyword[i]))
+                            {
+                                if (!keywordDic.Keys.Contains(keyword[i]))
+                                {
+                                    numOfKeyword += 1;
+                                    keywordDic.Add(keyword[i], numOfKeyword);
+                                    insertKeyAndR = insertKeyAndR + string.Format(@" insert into imagekeyword(keyword_id,keyword) value('{0}','{1}');insert into img_and_key_relation(keyword_id,image_id) values('{2}','{3}');", keywordDic[keyword[i]], keyword[i], keywordDic[keyword[i]], numOfImage);
+                                }
+                                else
+                                {
+                                    int keyword_id = keywordDic[keyword[i]];
+                                    insertKeyAndR = insertKeyAndR + string.Format(@"insert into img_and_key_relation(keyword_id,image_id) values('{0}','{1}');", keyword_id, numOfImage);
+                                }                              
+                            }
+                        }
+                        sqlCommond = insertImageCommond + insertKeyAndR;
+                        SQLStringList.Add(sqlCommond);
+                        break;
+                }
+            }
+            return SQLStringList;
+        }
+
+        //将关系表解析出生成list
+        public List<string> filterToSqlCommond3(string fileName)
+        {
+            List<string> SQLStringList = new List<string>();
+            Data fileData = new Data();
+            Dictionary<string, int> keywordDic = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            //Dictionary<string, int> imageDic = new Dictionary<string, int>();
+            string sqlCommond = "";
+            int numOfKeyword = 0;
+            int numOfImage = 0;
+            //HashSet<string> keywordSet = new HashSet<string>();
+            StreamReader sr = new StreamReader(fileName);
+            string strContent;
+            while ((strContent = sr.ReadLine()) != null)
+            {
                 numOfImage += 1;
                 string[] strArr = strContent.Split(',');
                 fileData.id_other = strArr[0];
                 fileData.id_self = strArr[1];
                 fileData.image_url = strArr[3];
                 // imageDic.Add(fileData.id_other, numOfImage);
-                string insertImageCommond = string.Format(@"insert into image(image_id,id_other,id_self,image_url) values('{0}','{1}','{2}','{3}');", numOfImage, fileData.id_other, fileData.id_self, fileData.image_url);
+                //string insertImageCommond = string.Format(@"insert into image(image_id,id_other,id_self,image_url) values('{0}','{1}','{2}','{3}');", numOfImage, fileData.id_other, fileData.id_self, fileData.image_url);
                 string insertKeyAndR = "";
                 string[] keyword = strArr[4].Split(' ');
                 //numKeyword表示读取每一行获得的关键字个数
@@ -161,18 +237,20 @@ namespace readData
                     {
                         numOfKeyword += 1;
                         keywordDic.Add(keyword[i], numOfKeyword);
-                        insertKeyAndR = insertKeyAndR+string.Format(@" insert into imagekeyword(keyword_id,keyword) value('{0}','{1}');insert into img_and_key_relation(keyword_id,image_id) values('{2}','{3}');", keywordDic[keyword[i]], keyword[i], keywordDic[keyword[i]], numOfImage);
+                        insertKeyAndR = insertKeyAndR + string.Format(@"insert into img_and_key_relation(keyword_id,image_id) values('{2}','{3}');", keywordDic[keyword[i]], keyword[i], keywordDic[keyword[i]], numOfImage);
                     }
-                    else {
+                    else
+                    {
                         int keyword_id = keywordDic[keyword[i]];
                         insertKeyAndR = insertKeyAndR + string.Format(@"insert into img_and_key_relation(keyword_id,image_id) values('{0}','{1}');", keyword_id, numOfImage);
                     }
                 }
-                sqlCommond = insertImageCommond + insertKeyAndR;
+                sqlCommond = insertKeyAndR;
                 SQLStringList.Add(sqlCommond);
             }
             return SQLStringList;
         }
+       
         //读取插入指令文本信息，将插入语句转为list<string>
         public List<string> filterCommondLog(string CommondLogPath) {
             List<string> errComList = new List<string>();
